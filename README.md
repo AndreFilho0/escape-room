@@ -1,14 +1,16 @@
-Especificação de Tarefa: Desenvolvimento de Jogos do Tipo Escape Room em JavaScript
-Curso: Ciência da Computação
-Disciplina: Computação e Sociedade
-Tema: Legislação de TI
+## Especificação de Tarefa: Desenvolvimento de Jogos do Tipo Escape Room em JavaScript
+## Curso: Ciência da Computação
+## Disciplina: Computação e Sociedade
+## Tema: Legislação de TI
 
 Objetivo:
 Desenvolver três jogos interativos do tipo Escape Room, usando JavaScript, com foco em assuntos relacionados a legislações de tecnologia: Lei dos Direitos Autorais, LGPD (Lei Geral de Proteção de Dados), e Marco Civil da Internet. Cada jogo deverá desafiar o jogador com questões sobre um desses temas e usar elementos como portas, janelas, cofres e pistas que se desbloqueiam à medida que o jogador responde corretamente.
+
 Ferramentas Recomendadas:
 JavaScript: Para a lógica do jogo e interações.
 HTML/CSS: Para estruturar e estilizar os jogos.
 Ferramentas LLMs (Large Language Models): Para auxiliar na geração de código, ideias de perguntas, estruturação de conteúdo e correção de questões e do código.
+
 Instruções:
 Estrutura da Tarefa:
 Formação dos Grupos:
@@ -18,18 +20,23 @@ O grupo deverá desenvolver três jogos independentes, sendo um para cada tema:
 Lei dos Direitos Autorais;
 LGPD;
 Marco Civil da Internet.
+
+
 Requisitos para cada Jogo:
 O jogo deve ser desenvolvido exclusivamente em JavaScript, HTML e CSS.
 Cada jogo deve conter:
 Um cenário de escape room em que o jogador precisa resolver desafios em múltiplas "salas" ou fases para escapar.
 Elementos como portas, cofres e janelas que devem ser desbloqueados por meio de perguntas ou interações.
 Pistas e dicas espalhadas pelas salas para ajudar o jogador.
+
+
 No mínimo oito perguntas para cada jogo, cobrindo diferentes aspectos do respectivo tema.
 A progressão do jogo deve depender da resposta correta às perguntas.
 Entregável:
 O arquivo final deverá ser um .html contendo o código completo dos três jogos.
 Cada jogo deve ser identificado claramente no arquivo.
 Ferramentas de Desenvolvimento:
+
 Recomenda-se o uso de ferramentas LLMs tanto para a geração de código JavaScript (para a lógica do jogo, interações e estruturação), quanto para a criação de perguntas e compreensão dos tópicos.
 O uso dessas ferramentas deve ser explicado em um breve parágrafo, que será incluído como comentário no código ou em um anexo explicativo, detalhando como a equipe as utilizou no processo de codificação e na geração de conteúdo.
 Avaliação:
