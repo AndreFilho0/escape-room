@@ -45,19 +45,25 @@ Cada jogo será avaliado nos seguintes critérios:
 Abrangência do Assunto (30%): As perguntas abordam adequadamente os temas e cobrem os principais pontos de cada legislação?
 Acurácia das Questões (30%): As respostas e as questões estão corretas em relação ao conteúdo legislativo?
 Funcionalidade Técnica (20%): O jogo está tecnicamente correto? O código está funcionando adequadamente, sem bugs, e apresenta lógica clara?
+
+
 Prazer de Jogar (20%): O jogo é intuitivo e agradável de jogar, mantendo o jogador engajado?
 Avaliação pelos Colegas:
 Cada grupo será responsável por jogar os jogos dos outros grupos e avaliá-los com base em três critérios:
 Acurácia das Questões: O conteúdo das perguntas está correto?
 Abrangência do Assunto: As questões cobrem os principais tópicos de cada tema?
 Diversão e Interatividade: O jogo proporciona uma experiência divertida e desafiadora?
+
+
 A avaliação pelos colegas será indicada pelo professor em um momento futuro.
 Prazos e Entregas:
 Prazo de Entrega: Data limite de entrega do projeto será 30/10/2024.
 O arquivo .html deve ser enviado para o ambiente de entrega da disciplina.
 Orientações Finais:
 O grupo deve se reunir periodicamente para discutir o andamento do projeto e garantir que todos os membros participem igualmente.
+
 É recomendada a consulta à documentação oficial das legislações para garantir a veracidade das perguntas e respostas.
+
 Dicas:
 Usem as ferramentas LLMs para gerar conteúdo educativo, sugestões de perguntas e suporte na criação do código JavaScript (estruturação das lógicas de jogo, manipulação de DOM, e integração das questões).
 Ponderem sobre a experiência do usuário para que o jogo não seja apenas educativo, mas também divertido.
