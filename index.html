@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room - Quiz</title>
+    <style>
+        /* Estilos para o cenário e os elementos do escape room */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1e1e1e;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+        }
+
+        .terminal {
+            background-color: #000;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0px 0px 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .title {
+            font-size: 1.5em;
+            text-align: center;
+            color: #00ff00;
+            margin-bottom: 20px;
+        }
+
+        #quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #question {
+            font-size: 1.2em;
+            color: #00ff00;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #00ff00;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background-color: #00cc00;
+        }
+
+        #options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-button {
+            padding: 10px;
+            border: 2px solid #00ff00;
+            background-color: #111;
+            color: #00ff00;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .option-button:hover {
+            background-color: #00cc00;
+        }
+
+        #feedback {
+            font-size: 0.9em;
+            color: #ff3333;
+            margin-top: 10px;
+        }
+
+        #next-button {
+            padding: 10px;
+            border: 2px solid #00ff00;
+            background-color: #111;
+            color: #00ff00;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+            display: none; /* Ocultar inicialmente */
+        }
+
+        #next-button:hover {
+            background-color: #00cc00;
+        }
+
+        #retry-button {
+            display: none; /* Oculto inicialmente */
+            padding: 10px;
+            border: 2px solid #00ff00;
+            background-color: #111;
+            color: #00ff00;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        #retry-button:hover {
+            background-color: #00cc00;
+        }
+
+    </style>
+</head>
+<body onload="animateTitle()">
+    <div class="terminal">
+        <h1 id="title"></h1> <!-- Título animado -->
+        <div id="quiz-container">
+            <div id="question"></div>
+            <div id="options"></div>
+            <div id="feedback"></div>
+            <button id="next-button" onclick="skipQuestion()">Próxima questão</button> <!-- Botão Próxima questão -->
+            <button id="retry-button" onclick="resetQuiz()">Tentar Novamente</button> <!-- Botão Tentar Novamente -->
+        </div>
+    </div>
+    
+<script>
+ // Perguntas e Respostas do Jogo
+const quiz = [
+    { question: "Qual é a capital da França?", answer: "paris", options: ["madri", "paris", "lisboa", "roma"] },
+    { question: "Qual é o sistema operacional preferido dos hackers?", answer: "linux", options: ["windows", "linux", "macOS", "unix"] },
+    { question: "Qual linguagem é usada para estilizar páginas web?", answer: "css", options: ["html", "css", "javascript", "php"] }
+];
+
+let currentQuestion = 0;
+let acertos = 0;
+
+const questionElement = document.getElementById("question");
+const optionsElement = document.getElementById("options");
+const feedbackElement = document.getElementById("feedback");
+const nextButton = document.getElementById("next-button");
+const retryButton = document.getElementById("retry-button");
+
+// Função para animar o título
+function animateTitle() {
+    const titleText = "$ Escape Room LGPD";
+    const titleElement = document.getElementById("title");
+    let index = 0;
+
+    function typeLetter() {
+        if (index < titleText.length) {
+            titleElement.textContent += titleText.charAt(index);
+            index++;
+            setTimeout(typeLetter, 100); // Atraso entre as letras (100ms)
+        }
+    }
+
+    typeLetter();
+}
+
+/// Função para carregar a pergunta e opções
+function loadQuestion() {
+    if (currentQuestion < quiz.length) {
+        const currentQuiz = quiz[currentQuestion];
+        questionElement.textContent = currentQuiz.question;
+        
+        // Limpa as opções anteriores
+        optionsElement.innerHTML = "";
+        feedbackElement.textContent = "";
+
+        // Adiciona cada opção como um botão
+        currentQuiz.options.forEach(option => {
+            const button = document.createElement("button");
+            button.className = "option-button";
+            button.textContent = option;
+            button.onclick = () => checkAnswer(option);
+            optionsElement.appendChild(button);
+        });
+        
+        nextButton.style.display = "block"; // Exibe o botão "Próxima"
+        retryButton.style.display = "none"; // Oculta o botão "Tentar Novamente"
+    } else {
+        // Exibe o resultado ao finalizar as perguntas
+        const resultado = (acertos / quiz.length) >= 0.80
+            ? "Parabéns! Você completou o escape room com mais de 80%."
+            : "Você não teve mais de 80% de acerto. Tente novamente!";
+        
+        questionElement.textContent = resultado;
+        optionsElement.style.display = "none";
+        nextButton.style.display = "none";
+        
+        // Exibe o botão "Tentar Novamente" se a pontuação for menor que 80%
+        if (acertos / quiz.length < 0.80) {
+            retryButton.style.display = "block";
+        }
+    }
+}
+
+// Função para verificar a resposta
+function checkAnswer(selectedOption) {
+    const correctAnswer = quiz[currentQuestion].answer;
+    if (selectedOption === correctAnswer) {
+        acertos++;
+        currentQuestion++;
+        loadQuestion();
+    } else {
+        feedbackElement.textContent = "Resposta incorreta. Tente novamente!";
+    }
+}
+
+// Função para pular para a próxima pergunta
+function skipQuestion() {
+    currentQuestion++;
+    loadQuestion();
+}
+
+// Função para reiniciar o quiz
+function resetQuiz() {
+    currentQuestion = 0;
+    acertos = 0;
+    optionsElement.style.display = "flex"; // Exibe o contêiner de opções
+    retryButton.style.display = "none"; // Oculta o botão Tentar Novamente
+    loadQuestion();
+}
+
+// Carrega a primeira pergunta ao iniciar
+loadQuestion();
+
+</script>
+</body>
+</html>
