@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marco Civil da Internet - Quiz</title>
+    <style>
+      /* Estilos para o cenário e os elementos do escape room */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #18232e;
+        font-family: 'Arial', sans-serif;
+        color: #fff;
+      }
+
+      .terminal {
+        background-color: #18232e;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 600px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .title {
+        font-size: 1.8em;
+        text-align: center;
+        color: #fff;
+        margin-bottom: 20px;
+      }
+
+      #quiz-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      #question {
+        font-size: 1.4em;
+        color: #fff;
+      }
+
+      button {
+        padding: 12px;
+        border: none;
+        background-color: #fff;
+        color: #18232e;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 1em;
+      }
+
+      button:hover {
+        background-color: #445566;
+      }
+
+      #options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .option-button {
+        padding: 12px;
+        border: 2px solid #fff;
+        background-color: #18232e;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 1em;
+      }
+
+      .option-button:hover {
+        background-color: #445566;
+      }
+
+      #feedback {
+        font-size: 1em;
+        color: #ff3333;
+        margin-top: 10px;
+      }
+      #retry-button {
+        padding: 12px;
+        border: 2px solid #fff;
+        background-color: #18232e;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 1em;
+        display: none;
+      }
+
+      #retry-button:hover {
+        background-color: #445566;
+      }
+    </style>
+  </head>
+  <body onload="animateTitle()">
+    <div class="terminal">
+      <h1 id="title"></h1>
+      <!-- Título animado -->
+      <div id="quiz-container">
+        <div id="question"></div>
+        <div id="options"></div>
+        <div id="feedback"></div>
+        <button id="next-button" onclick="skipQuestion()">
+          Próxima questão
+        </button>
+        <!-- Botão Próxima questão -->
+        <button id="retry-button" onclick="resetQuiz()">
+          Tentar Novamente
+        </button>
+        <!-- Botão Tentar Novamente -->
+      </div>
+    </div>
+
+    <script>
+      // Perguntas e Respostas do Jogo
+      const quiz = [
+        {
+          question: 'O que é o Marco Civil da Internet?',
+          answer:
+            'Uma declaração de direitos dos usuários de internet e princípios para o uso da rede',
+          options: [
+            'Um conjunto de leis para regulamentar o comércio eletrônico no Brasil',
+            'Uma declaração de direitos dos usuários de internet e princípios para o uso da rede',
+            'Uma lei para proibir o uso de redes sociais sem identificação',
+            'Um acordo internacional sobre o uso de dados pessoais online',
+          ],
+          text: "As portas estão trancadas. Resolva o enigma para conquistar sua liberdade"
+        },
+
+        {
+          question: 'Qual é o principal objetivo do Marco Civil da Internet?',
+          answer:
+            'Proteger os direitos dos usuários e definir responsabilidades dos provedores de serviço',
+          options: [
+            'Controlar o conteúdo publicado na internet',
+            'Garantir o desenvolvimento da economia digital no Brasil',
+            'Proteger os direitos dos usuários e definir responsabilidades dos provedores de serviço',
+            'Estabelecer regras para o uso de criptomoedas',
+          ],
+          text: "O tempo está correndo. A chave só será sua se decifrar a resposta"
+        },
+
+        {
+          question: 'O Marco Civil da Internet foi sancionado em:',
+          answer: '2014',
+          options: ['2005', '2010', '2014', '2018'],
+          text: "A saída está próxima, mas apenas quem desvendar o mistério encontrará a chave."
+        },
+
+        {
+          question:
+            'De acordo com o Marco Civil, quem é responsável pelo conteúdo publicado pelos usuários?',
+          answer: 'O usuário que publicou o conteúdo',
+          options: [
+            'O provedor de internet',
+            'O usuário que publicou o conteúdo',
+            'O governo brasileiro',
+            'O administrador da rede social',
+          ],
+          text: "Você está preso. Apenas a resposta certa revela a passagem para a liberdade."
+        },
+
+        {
+          question:
+            'Qual princípio é defendido pelo Marco Civil para evitar discriminação ou privilégios em relação ao tráfego de dados?',
+          answer: 'Neutralidade da rede',
+          options: [
+            'Neutralidade da rede',
+            'Monopólio da informação',
+            'Anonimato digital',
+            'Vigilância cibernética',
+          ],
+          text: "Sua liberdade depende de sua astúcia. Encontre a resposta e liberte-se."
+        },
+
+        {
+          question: 'O Marco Civil estabelece que os provedores de internet:',
+          answer:
+            'Precisam guardar os registros de conexão por no mínimo 1 ano',
+          options: [
+            'Podem vender dados dos usuários para fins comerciais',
+            'Precisam guardar os registros de conexão por no mínimo 1 ano',
+            'São obrigados a bloquear qualquer site estrangeiro',
+            'Devem monitorar o conteúdo dos usuários para evitar fraudes',
+          ],
+          text: "O caminho está bloqueado. Solucione o enigma para alcançar a chave da saída"
+        },
+
+        {
+          question:
+            'Qual dos seguintes direitos dos usuários é assegurado pelo Marco Civil?',
+          answer: 'Direito à privacidade e proteção de dados pessoais',
+          options: [
+            'Direito de acessar qualquer conteúdo online sem moderação',
+            'Direito ao acesso à internet livre de custos',
+            'Direito à privacidade e proteção de dados pessoais',
+            'Direito de ter um perfil verificado em redes sociais',
+          ],
+          text: "Há uma chave escondida à espera da resposta certa. Está preparado para encontrá-la?" 
+        },
+
+        {
+          question:
+            'O que ocorre caso um provedor de internet descumpra a neutralidade da rede estabelecida pelo Marco Civil?',
+          answer: 'Ele pode ser advertido, multado ou até suspenso',
+          options: [
+            'Ele pode ser advertido, multado ou até suspenso',
+            'Ele perde o direito de oferecer internet',
+            'Ele é obrigado a compensar os usuários financeiramente',
+            'Ele é automaticamente banido do Brasil',
+          ],
+          text: "A saída está próxima, mas apenas quem desvendar o mistério encontrará a chave."
+        },
+      ];
+
+      let currentQuestion = 0;
+      let acertos = 0;
+
+      const questionElement = document.getElementById('question');
+      const optionsElement = document.getElementById('options');
+      const feedbackElement = document.getElementById('feedback');
+      const nextButton = document.getElementById('next-button');
+      const retryButton = document.getElementById('retry-button');
+
+      function animateTitle() {
+        const titleText = '$ Escape Room Marco Civil da Internet';
+        const titleElement = document.getElementById('title');
+        let index = 0;
+        function typeLetter() {
+          if (index < titleText.length) {
+            titleElement.textContent += titleText.charAt(index);
+            index++;
+            setTimeout(typeLetter, 100);
+          }
+        }
+        typeLetter();
+      }
+
+      function loadQuestion() {
+        if (currentQuestion < quiz.length) {
+          const currentQuiz = quiz[currentQuestion];
+          questionElement.textContent = currentQuiz.question;
+          optionsElement.innerHTML = '';
+          feedbackElement.textContent =currentQuiz.text;
+          currentQuiz.options.forEach((option) => {
+            const button = document.createElement('button');
+            button.className = 'option-button';
+            button.textContent = option;
+            button.onclick = () => checkAnswer(option);
+            optionsElement.appendChild(button);
+          });
+          nextButton.style.display = 'block';
+          retryButton.style.display = 'none';
+        } else {
+          const resultado =
+            acertos === quiz.length
+              ? 'Parabéns! Você abriu a porta com sucesso! 100% de acertos!'
+              : 'Você não acertou todas as questões. Tente novamente!';
+          questionElement.textContent = resultado;
+          optionsElement.style.display = 'none';
+          nextButton.style.display = 'none';
+          feedbackElement.style.display = 'none';
+          if (acertos !== quiz.length) retryButton.style.display = 'block';
+        }
+      }
+
+      function checkAnswer(selectedOption) {
+        const correctAnswer = quiz[currentQuestion].answer;
+        if (selectedOption === correctAnswer) {
+          acertos++;
+          currentQuestion++;
+          loadQuestion();
+        } else {
+          feedbackElement.textContent = 'Resposta incorreta. Tente novamente!';
+        }
+      }
+
+      function skipQuestion() {
+        currentQuestion++;
+        loadQuestion();
+      }
+
+      function resetQuiz() {
+        currentQuestion = 0;
+        acertos = 0;
+        optionsElement.style.display = 'flex';
+        retryButton.style.display = 'none';
+        loadQuestion();
+      }
+
+      loadQuestion();
+    </script>
+  </body>
+</html>

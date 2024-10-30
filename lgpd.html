@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Escape Room - Quiz</title>
+    <style>
+      /* Estilos para o cenário e os elementos do escape room */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #2c3e50;
+        font-family: 'Arial', sans-serif;
+        color: #ecf0f1;
+      }
+
+      .terminal {
+        background-color: #34495e;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 600px;
+        box-shadow: 0px 0px 20px rgba(236, 240, 241, 0.5);
+      }
+
+      .title {
+        font-size: 1.8em;
+        text-align: center;
+        color: #1abc9c;
+        margin-bottom: 20px;
+      }
+
+      #quiz-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      #question {
+        font-size: 1.4em;
+        color: #ecf0f1;
+      }
+
+      button {
+        padding: 12px;
+        border: none;
+        background-color: #1abc9c;
+        color: #2c3e50;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 1em;
+      }
+
+      button:hover {
+        background-color: #16a085;
+      }
+
+      #options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .option-button {
+        padding: 12px;
+        border: 2px solid #1abc9c;
+        background-color: #34495e;
+        color: #ecf0f1;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 1em;
+      }
+
+      .option-button:hover {
+        background-color: #1abc9c;
+      }
+
+      #feedback {
+        font-size: 1em;
+        color: #e74c3c;
+        margin-top: 10px;
+      }
+
+      #next-button,
+      #retry-button {
+        padding: 12px;
+        border: 2px solid #1abc9c;
+        background-color: #34495e;
+        color: #ecf0f1;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 1em;
+        display: none;
+      }
+
+      #next-button:hover,
+      #retry-button:hover {
+        background-color: #16a085;
+      }
+    </style>
+  </head>
+  <body onload="animateTitle()">
+    <div class="terminal">
+      <h1 id="title"></h1>
+      <div id="quiz-container">
+        <div id="question"></div>
+        <div id="options"></div>
+        <div id="feedback"></div>
+        <button id="next-button" onclick="skipQuestion()">
+          Próxima questão
+        </button>
+        <button id="retry-button" onclick="resetQuiz()">
+          Tentar Novamente
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const quiz = [
+        {
+          question: 'Qual é o objetivo principal da LGPD?',
+          answer: 'Assegurar a proteção de dados pessoais',
+          options: [
+            'Proteger os dados das empresas',
+            'Facilitar o marketing digital',
+            'Assegurar a proteção de dados pessoais',
+            'Reforçar o comércio eletrônico',
+          ],
+          text: "As portas estão trancadas. Resolva o enigma para conquistar sua liberdade"
+        },
+        {
+          question: 'Quem é responsável pela fiscalização da LGPD?',
+          answer: 'Autoridade Nacional de Proteção de Dados (ANPD)',
+          options: [
+            'Banco Central',
+            'Ministério da Economia',
+            'Conselho Nacional de Justiça',
+            'Autoridade Nacional de Proteção de Dados (ANPD)',
+          ],
+          text: "O tempo está correndo. A chave só será sua se decifrar a resposta"
+        },
+        {
+          question: "O que significa a base legal do 'consentimento' na LGPD?",
+          answer: 'Necessidade de autorização prévia e específica do titular',
+          options: [
+            'Obrigação de coletar dados pessoais de todas as pessoas',
+            'Necessidade de autorização prévia e específica do titular',
+            'A coleta de dados sem aviso prévio',
+            'Acesso automático aos dados',
+          ],
+          text: "A saída está próxima, mas apenas quem desvendar o mistério encontrará a chave."
+        },
+        {
+          question: 'Qual é um dos princípios fundamentais da LGPD?',
+          answer: 'Finalidade',
+          options: [
+            'Anonimato',
+            'Finalidade',
+            'Livre acesso a dados de terceiros',
+            'Reuso de dados sem restrição',
+          ],
+          text: "Você está preso. Apenas a resposta certa revela a passagem para a liberdade."
+        },
+        {
+          question: "Quais dados a LGPD define como 'sensíveis'?",
+          answer: 'Dados biométricos e de saúde',
+          options: [
+            'Nome e endereço',
+            'Preferências de compra',
+            'Dados biométricos e de saúde',
+            'Data de nascimento',
+          ],
+          text: "Sua liberdade depende de sua astúcia. Encontre a resposta e liberte-se."
+        },
+        {
+          question:
+            'Qual é um direito assegurado ao titular dos dados pela LGPD?',
+          answer: 'Receber cópia dos dados gratuitamente',
+          options: [
+            'Vender seus dados para terceiros',
+            'Receber cópia dos dados gratuitamente',
+            'Exigir pagamento para visualizar seus dados',
+            'Impedir que dados sensíveis sejam coletados',
+          ],
+          text: "O caminho está bloqueado. Solucione o enigma para alcançar a chave da saída"
+        },
+        {
+          question:
+            'Quando o tratamento de dados pessoais pode ser feito sem consentimento?',
+          answer: 'Para proteção da vida do titular',
+          options: [
+            'Quando for de interesse da empresa',
+            'Para proteção da vida do titular',
+            'Em ações de marketing digital',
+            'Sempre que o tratamento for realizado por estrangeiros',
+          ],
+          text: "Há uma chave escondida à espera da resposta certa. Está preparado para encontrá-la?"
+        },
+        {
+          question: 'O que acontece em caso de descumprimento da LGPD?',
+          answer: 'Aplicação de sanções, como multas',
+          options: [
+            'Anulação da coleta de dados',
+            'Obrigatoriedade de compartilhar dados com a ANPD',
+            'Aplicação de sanções, como multas',
+            'Suspensão automática do serviço',
+          ],
+          text: "A saída está próxima, mas apenas quem desvendar o mistério encontrará a chave."
+        },
+      ];
+
+      let currentQuestion = 0;
+      let acertos = 0;
+
+      const questionElement = document.getElementById('question');
+      const optionsElement = document.getElementById('options');
+      const feedbackElement = document.getElementById('feedback');
+      const nextButton = document.getElementById('next-button');
+      const retryButton = document.getElementById('retry-button');
+
+      function animateTitle() {
+        const titleText = '$ Escape Room LGPD';
+        const titleElement = document.getElementById('title');
+        let index = 0;
+        function typeLetter() {
+          if (index < titleText.length) {
+            titleElement.textContent += titleText.charAt(index);
+            index++;
+            setTimeout(typeLetter, 100);
+          }
+        }
+        typeLetter();
+      }
+
+      function loadQuestion() {
+        if (currentQuestion < quiz.length) {
+          const currentQuiz = quiz[currentQuestion];
+          questionElement.textContent = currentQuiz.question;
+          optionsElement.innerHTML = '';
+          feedbackElement.textContent =currentQuiz.text;
+          currentQuiz.options.forEach((option) => {
+            const button = document.createElement('button');
+            button.className = 'option-button';
+            button.textContent = option;
+            button.onclick = () => checkAnswer(option);
+            optionsElement.appendChild(button);
+          });
+          nextButton.style.display = 'block';
+          retryButton.style.display = 'none';
+        } else {
+          const resultado =
+            acertos === quiz.length
+              ? 'Parabéns! Você abriu a porta com sucesso! 100% de acertos!'
+              : 'Você não acertou todas as questões. Tente novamente!';
+          questionElement.textContent = resultado;
+          optionsElement.style.display = 'none';
+          nextButton.style.display = 'none';
+          feedbackElement.style.display = 'none'
+          if (acertos !== quiz.length) retryButton.style.display = 'block';
+        }
+      }
+
+      function checkAnswer(selectedOption) {
+        const correctAnswer = quiz[currentQuestion].answer;
+        if (selectedOption === correctAnswer) {
+          acertos++;
+          currentQuestion++;
+          loadQuestion();
+        } else {
+          feedbackElement.textContent = 'Resposta incorreta. Tente novamente!';
+        }
+      }
+
+      function skipQuestion() {
+        currentQuestion++;
+        loadQuestion();
+      }
+
+      function resetQuiz() {
+        currentQuestion = 0;
+        acertos = 0;
+        optionsElement.style.display = 'flex';
+        retryButton.style.display = 'none';
+        loadQuestion();
+      }
+
+      loadQuestion();
+    </script>
+  </body>
+</html>
